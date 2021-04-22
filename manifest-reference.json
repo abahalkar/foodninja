@@ -1,0 +1,28 @@
+{
+    
+    "name":"App name",
+    "short_name":"Short name for home screen",
+    "description":"Short description about your app",
+    "start_url":"start app with which file",
+    "display":"run application in browser or standalone, minimal-ui, fullscreen",
+    "background_color":"app background color",
+    "theme_color":"mobile backcolor when app run, color topbar",
+    "orientation":"portrait or landscape",
+    "icons":[
+        {
+            "src":"path of image",
+            "type":"type of file/image",
+            "sizes":"size of image"
+        }
+    ],
+    
+    "shortcuts":[
+        {
+            "name":"shortcut name",
+            "short_name":"shortcut short name",
+            "description":"description about shortcut",
+            "url":"url of file related to shortcut",
+            "icons":["array of icons with same properties"]
+        }
+    ]
+}
