@@ -8,7 +8,7 @@ if('serviceWorker' in navigator){
 * when successful return reg object while on fail return err object
 * we print message using arrow function.
 */
-navigator.serviceWorker.register('../sw.js')
+navigator.serviceWorker.register('/sw.js')
 .then((reg)=>console.log("service worker registered", reg))
 .catch((err)=>console.log("service worker not registered", err));
 }
