@@ -3,7 +3,7 @@
     "name":"Food Ninja",
     "short_name":"FoodNinja",
     "description":"This is first app devv with PWA",
-    "start_url":"/index.html",
+    "start_url":"./index.html",
     "display":"standalone",
     "background_color":"#FFE1C4",
     "theme_color":"#FFE9D2",
