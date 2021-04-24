@@ -1,7 +1,7 @@
 {
     
     "name":"Food Ninja",
-    "short_name":"FoodNinja",
+    "short_name":"Food-Ninja",
     "description":"This is first app devv with PWA",
     "start_url":"./index.html",
     "display":"standalone",
