@@ -8,10 +8,11 @@
 * on refresh page new activation in waiting it's only activate wen all tab cloase and broswer and reopen app
 */
 //caceh name
-const staticCacheName='site-statics-v1';
-const dynamicCacheName='site-dynamic-v1';
+const staticCacheName='site-statics-v5';
+const dynamicCacheName='site-dynamic-v5';
 //in asset we pass many string and each string represt resouces/asset which we want cache
 const assets=[
+    '/',
     '/index.html',
     '/css/styles.css',
     '/css/materialize.min.css',
@@ -94,6 +95,9 @@ self.addEventListener("activate", (evt)=>{
 */
 self.addEventListener("fetch",(evt)=>{
     //console.log("Fetch Listner Requested",evt );
+/**here we check there is no firebase api not in request then only store cache code block run */
+if(evt.request.url.indexOf('firebase.googleapis.com')=== -1){
+
 /* Geeting stored cache and retun to browser when offline
 * for this we use respondWith() which pause the fetch event and respose our custom respose from cache
 * inside respodeWith we check stored cache with requested event using match()
@@ -103,39 +107,40 @@ self.addEventListener("fetch",(evt)=>{
 *even after we make app online still it's take asset from cache by service worker
 * we also fix font issue by adding in cache which we miss url in css https://fonts.gstatic.com/s/materialicons/v85/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2
 */
-evt.respondWith(
-    caches.match(evt.request).then(cacheRes => {
-        //return cacheRes || fetch(evt.request);
-        //dynamic cache const dynamicCacheName=site-dynamic-v1
-        /**
-         * we intercept fetch request and check do we have cache for request fetch event, if yes then return cache asset elase
-         * pass request to server for respose. 
-         * now we intercept that server respose and store that response in new dynamic cache
-         * so continue with then(fetchReq=>) we use then promise on fetch(evt.request).
-         * inside respose we open new cache "dynamic cache and" clone fetch server respose in dynamic cache using put()
-         * we clone and then put andreturn original fetchreq as page resonse for page loading
-         */
-        return cacheRes || fetch(evt.request).then(fetchReq=>{
-            return caches.open(dynamicCacheName).then(cache=>{
-                cache.put(evt.request.url, fetchReq.clone());
-                //call and check the limiting cache size
-                limitCacheSize(dynamicCacheName,15);
-                return fetchReq;
-            })
-            /** call fallback page
-             * this catch will excute when fetch request fail to find response in static cache, dynamic cache and get respose from server
-             * when all above condtions fails then callback function excute. specially on offline mode when user tried to access page and unable to get it
-             * now we gonna check the request should be html page current version fallback page return also when some one request image and that not in cache
-             * so we add condition to check retun fallon on html page only
-             * we check page url in using indexof() and it greter than -1 then only we return the fallback page
-            */
-        }).catch(()=>{
-            if(evt.request.url.indexOf('.html')>-1)
+ evt.respondWith(
+     caches.match(evt.request).then(cacheRes => {
+         //return cacheRes || fetch(evt.request);
+         //dynamic cache const dynamicCacheName=site-dynamic-v1
+         /**
+          * we intercept fetch request and check do we have cache for request fetch event, if yes then return cache asset elase
+          * pass request to server for respose. 
+          * now we intercept that server respose and store that response in new dynamic cache
+          * so continue with then(fetchReq=>) we use then promise on fetch(evt.request).
+          * inside respose we open new cache "dynamic cache and" clone fetch server respose in dynamic cache using put()
+          * we clone and then put andreturn original fetchreq as page resonse for page loading
+          */
+         return cacheRes || fetch(evt.request).then(fetchReq=>{
+             return caches.open(dynamicCacheName).then(cache=>{
+                 cache.put(evt.request.url, fetchReq.clone());
+                 //call and check the limiting cache size
+                 limitCacheSize(dynamicCacheName,15);
+                 return fetchReq;
+             })
+             /** call fallback page
+              * this catch will excute when fetch request fail to find response in static cache, dynamic cache and get respose from server
+              * when all above condtions fails then callback function excute. specially on offline mode when user tried to access page and unable to get it
+              * now we gonna check the request should be html page current version fallback page return also when some one request image and that not in cache
+              * so we add condition to check retun fallon on html page only
+              * we check page url in using indexof() and it greter than -1 then only we return the fallback page
+             */
+         }).catch(()=>{
+             if(evt.request.url.indexOf('.html')>-1)
            return  caches.match('/pages/fallback.html')
-        });
+         });
 
     })
-)
+ )
+}
 });
 
 //Limiting the cache
