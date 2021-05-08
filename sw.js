@@ -22,8 +22,7 @@ const assets=[
     '/img/dish.png',
     'https://fonts.googleapis.com/icon?family=Material+Icons',
     'https://fonts.gstatic.com/s/materialicons/v85/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2',
-    '/pages/fallback.html'
-    
+    '/pages/fallback.html'  
 ];
 self.addEventListener("install",(evt)=>{
     console.log("Service worker installed",evt);
